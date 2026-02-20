@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMM 教學｜找山數 → 方向 → 離場點 → 進場點</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0e14;
+      --bg-subtle: #12151d;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-hover: rgba(255, 255, 255, 0.07);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #eef1f6;
+      --text-muted: #8b92a5;
+      --accent: #00d4aa;
+      --accent-glow: rgba(0, 212, 170, 0.25);
+      --accent-dim: #00b894;
+      --blue: #5c7cfa;
+      --blue-dim: rgba(92, 124, 250, 0.2);
+      --orange: #ff9f43;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
+    }
+
+    /* Layout: 螢幕置中，sidebar + main */
+    .app {
+      display: flex;
+      min-height: 100vh;
+      max-width: 960px;
+      margin: 0 auto;
+      box-shadow: 0 0 0 1px var(--border);
+    }
+
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 1.5rem 0;
+      background: var(--bg-subtle);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+    }
+
+    .sidebar-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      padding: 0 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .nav-step {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.25rem;
+      margin: 0 0.5rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .nav-step:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .nav-step.active {
+      background: var(--accent-glow);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .nav-step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-step.active .nav-step-num {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      max-width: 680px;
+      padding: 2rem 2.5rem 4rem;
+      padding-left: max(2rem, env(safe-area-inset-left));
+      padding-right: max(2.5rem, env(safe-area-inset-right));
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      background: var(--accent-glow);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Accordion sections */
+    .section {
+      margin-bottom: 0.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .section:hover {
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .section.open {
+      border-color: rgba(0, 212, 170, 0.35);
+      box-shadow: 0 0 0 1px rgba(0, 212, 170, 0.1);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background var(--transition);
+    }
+
+    .section-header:hover {
+      background: var(--surface-hover);
+    }
+
+    .section-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      color: var(--bg);
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      flex: 1;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .section-chevron {
+      width: 24px;
+      height: 24px;
+      color: var(--text-muted);
+      transition: transform var(--transition);
+    }
+
+    .section.open .section-chevron {
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
+
+    .section-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .section.open .section-body {
+      max-height: 1200px;
+    }
+
+    .section-inner {
+      padding: 0 1.25rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-inner ul, .section-inner ol {
+      margin: 0 0 1rem;
+      padding-left: 1.4rem;
+    }
+
+    .section-inner li { margin-bottom: 0.35rem; }
+
+    .section-inner p { margin: 0 0 0.75rem; }
+
+    .section-inner strong { color: #fff; font-weight: 600; }
+
+    /* Cards inside sections */
+    .card {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      margin: 0.75rem 0;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .card:hover {
+      border-color: rgba(0, 212, 170, 0.2);
+    }
+
+    .card h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: var(--accent);
+    }
+
+    .card ul { margin: 0; padding-left: 1.2rem; }
+    .card li { margin-bottom: 0.25rem; }
+
+    /* Tables */
+    .table-wrap {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      overflow: auto;
+      margin: 1rem 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    th, td {
+      padding: 0.7rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: rgba(255,255,255,0.04);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr {
+      transition: background var(--transition);
+    }
+
+    tbody tr:hover {
+      background: var(--surface-hover);
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: rgba(0, 212, 170, 0.08);
+      border: 1px solid rgba(0, 212, 170, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+    }
+
+    .highlight-box p { margin: 0; }
+
+    /* Interactive flow */
+    .flow-section {
+      margin: 2rem 0;
+    }
+
+    .flow-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .flow-step:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .flow-step.highlight {
+      background: var(--accent-glow);
+      border-color: rgba(0, 212, 170, 0.3);
+      color: var(--accent);
+    }
+
+    .flow-step-arrow {
+      width: 20px;
+      color: var(--accent);
+      opacity: 0.7;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .flow-step-text {
+      flex: 1;
+      font-size: 0.9rem;
+    }
+
+    /* End note */
+    .end-note {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Responsive：平板 */
+    @media (max-width: 900px) {
+      .app {
+        flex-direction: column;
+        max-width: 100%;
+        box-shadow: none;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.75rem max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .sidebar-title { width: 100%; padding: 0 0.5rem; margin-bottom: 0.5rem; }
+      .nav-step { padding: 0.5rem 0.75rem; margin: 0; font-size: 0.8rem; }
+      .main {
+        padding: 1.25rem max(1.25rem, env(safe-area-inset-left)) 3rem max(1.25rem, env(safe-area-inset-right));
+      }
+      .hero h1 { font-size: 1.45rem; }
+    }
+
+    /* Responsive：手機 */
+    @media (max-width: 480px) {
+      .main {
+        padding: 1rem max(1rem, env(safe-area-inset-left)) 2.5rem max(1rem, env(safe-area-inset-right));
+      }
+      .hero h1 { font-size: 1.28rem; }
+      .hero-badge { font-size: 0.65rem; padding: 0.3rem 0.65rem; }
+      .section-header { padding: 0.85rem 1rem; }
+      .section-num { width: 32px; height: 32px; font-size: 0.85rem; }
+      .section-title { font-size: 0.95rem; }
+      .section-inner { padding: 0 1rem 1rem; }
+      .card { padding: 0.85rem 1rem; }
+      .card h4 { font-size: 0.85rem; }
+      table { font-size: 0.82rem; }
+      th, td { padding: 0.55rem 0.75rem; }
+      .flow-step-text { font-size: 0.82rem; }
+      .nav-step { padding: 0.45rem 0.6rem; font-size: 0.75rem; }
+      .nav-step-num { width: 20px; height: 20px; font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-title">步驟導覽</div>
+      <a class="nav-step" href="#section-1" data-section="1"><span class="nav-step-num">1</span>找方向</a>
+      <a class="nav-step" href="#section-2" data-section="2"><span class="nav-step-num">2</span>弟弟同陣線</a>
+      <a class="nav-step" href="#section-3" data-section="3"><span class="nav-step-num">3</span>哥哥與 OBV</a>
+      <a class="nav-step" href="#section-4" data-section="4"><span class="nav-step-num">4</span>離場點</a>
+      <a class="nav-step" href="#section-5" data-section="5"><span class="nav-step-num">5</span>驗證離場點</a>
+      <a class="nav-step" href="#section-6" data-section="6"><span class="nav-step-num">6</span>進場點</a>
+      <a class="nav-step" href="#section-7" data-section="7"><span class="nav-step-num">7</span>SDD 漲到進場點</a>
+      <a class="nav-step" href="#flow" data-section="flow"><span class="nav-step-num">→</span>流程總覽</a>
+    </aside>
+
+    <main class="main">
+      <header class="hero">
+        <span class="hero-badge">MMM 教學</span>
+        <h1>找山數 → 方向 → 離場點 → 進場點</h1>
+        <p>從「找方向（最多山數）」到離場點與進場點的完整操作流程</p>
+      </header>
+
+      <section class="section open" id="section-1" data-section="1">
+        <div class="section-header">
+          <span class="section-num">1</span>
+          <h2 class="section-title">找方向（最多山數）</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <ul>
+              <li><strong>起點</strong>：從距離 K 棒歷史<strong>最新的橙色破 0 軸</strong>開始。</li>
+              <li><strong>時間軸</strong>：以 <strong>1H</strong> 為起點，依序查找：1H → 90 分 → 2H → 3H → 4H → 6H → 8H → 12H → 1D，直到找到方向（最多山數）。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-2" data-section="2">
+        <div class="section-header">
+          <span class="section-num">2</span>
+          <h2 class="section-title">確認方向與弟弟同陣線</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <ol>
+              <li>假設在 <strong>1H</strong> 找到方向，並確認身份為 <strong>SDD</strong>。</li>
+              <li>切換到<strong>弟弟時間軸：30 分鐘</strong>，確認 30 分鐘身份也是 <strong>SDD</strong>。</li>
+              <li>若方向（1H）與弟弟（30 分）皆為 SDD → <strong>方向與弟弟同陣線</strong>，可繼續下一步。</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-3" data-section="3">
+        <div class="section-header">
+          <span class="section-num">3</span>
+          <h2 class="section-title">找哥哥身份並確認 OBV 同陣線</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <ol>
+              <li><strong>找哥哥</strong>：切到 <strong>2H</strong>，確認身份為 <strong>SDD</strong>。</li>
+              <li><strong>找哥哥的哥哥</strong>：切到 <strong>4H</strong>，確認身份為 <strong>SDD</strong>。</li>
+              <li><strong>OBV 同陣線</strong>：看 4H OBV 是否為<strong>多頭縮量</strong>；回到 1H 雙重確認身份與 OBV 皆同陣線（4H 身份 = SDD，4H OBV 與 1H 方向 OBV 同陣線）。</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-4" data-section="4">
+        <div class="section-header">
+          <span class="section-num">4</span>
+          <h2 class="section-title">確定離場點位置（任務終點）</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <ol>
+              <li>切到 <strong>8H</strong>，確認身份為 <strong>OWU</strong>。</li>
+              <li><strong>離場點</strong> = <strong>哥哥的哥哥 8H 的 EMA52 位置</strong>。</li>
+            </ol>
+            <div class="highlight-box">
+              <p>至此，我們已確認：<strong>方向</strong> 與 <strong>離場點位置</strong>。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-5" data-section="5">
+        <div class="section-header">
+          <span class="section-num">5</span>
+          <h2 class="section-title">驗證離場點位置是否準確</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <p>要驗證「離場點」是否可靠，需完成以下三步驟（共 3 個驗證）：</p>
+            <div class="card">
+              <h4>5.1 在 8H 畫離場水平線</h4>
+              <ul><li>在<strong>哥哥的哥哥 8H</strong> 圖上，於 <strong>EMA52</strong> 處畫出<strong>水平線</strong>，標記離場點。</li></ul>
+            </div>
+            <div class="card">
+              <h4>5.2 回 1H 畫 FIBO（SDD 方向）</h4>
+              <ul>
+                <li>回到 <strong>1H</strong>，取<strong>相對低點（A）</strong>與<strong>相對高點（B）</strong>畫 FIBO：A 左下→B 右上 ↗↓，或 A 右下→B 左上 ↑↖。</li>
+                <li>檢查 FIBO <strong>0.382</strong> 或 <strong>0.618</strong> 是否與 8H <strong>EMA52 水平線</strong>重疊。</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4>5.3 回 8H 畫成交量分佈圖</h4>
+              <ul><li>在 EMA52 附近畫<strong>波段成交量分佈圖</strong>，檢查 <strong>POC</strong> 是否與 EMA52 重疊 → 第三個驗證。</li></ul>
+            </div>
+            <h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">驗證小結（離場點）</h4>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>驗證</th><th>內容</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>EMA52 水平線（離場點位置）</td></tr>
+                  <tr><td>2</td><td>1H FIBO 0.382 / 0.618 與 EMA52 重疊</td></tr>
+                  <tr><td>3</td><td>8H 波段成交量分佈圖 POC 與 EMA52 重疊</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>三項皆符合 → <strong>離場點驗證完成</strong>。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-6" data-section="6">
+        <div class="section-header">
+          <span class="section-num">6</span>
+          <h2 class="section-title">找進場點位置</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <p>以下在 <strong>1H 時間軸</strong>進行。</p>
+            <div class="card">
+              <h4>6.1 畫第一個 FIBO</h4>
+              <ul><li>相對高點與低點；A 左上→B 右下 ↘↑，或 A 右上→B 左下 ↑↙。</li></ul>
+            </div>
+            <div class="card">
+              <h4>6.2 標記 0.618、1.382</h4>
+              <ul><li><strong>0.618</strong> 畫水平線 → 可先進一半倉；<strong>1.382</strong> 畫水平線作進場目標。</li></ul>
+            </div>
+            <div class="card">
+              <h4>6.3 第二個 FIBO 找重疊</h4>
+              <ul><li>再畫第二個 FIBO，看是否與 0.618、1.382、1.618 重疊；目標至少兩條線重疊。</li></ul>
+            </div>
+            <div class="card">
+              <h4>6.4 4H 支撐與阻力確認</h4>
+              <ul><li>切到 <strong>4H</strong>，檢查進場重疊水平線是否落在<strong>支撐或阻力</strong>上；保留該區，其餘可清除。</li></ul>
+            </div>
+            <h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">進場點證據小結</h4>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>證據</th><th>內容</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>4H 支撐與阻力位置</td></tr>
+                  <tr><td>2</td><td>兩個 FIBO 重疊（0.618 / 1.382 / 1.618）</td></tr>
+                  <tr><td>3</td><td>進場水平線落在支撐或阻力上</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="section-7" data-section="7">
+        <div class="section-header">
+          <span class="section-num">7</span>
+          <h2 class="section-title">檢查 SDD 是否會漲到進場點位置</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <p>如何判斷 1H 方向 SDD <strong>會漲到進場點</strong>？看 <strong>4H OBV</strong>：</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>4H OBV 狀態</th><th>解讀</th><th>進場點建議</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>OBV &gt; 0，多頭縮量</strong></td>
+                    <td>仍有一口氣會漲上去，碰到進場區後再考慮離場。</td>
+                    <td>進場點維持在原本重疊區。</td>
+                  </tr>
+                  <tr>
+                    <td><strong>OBV &lt; 0</strong></td>
+                    <td>沒有氣了，上漲力道不足。</td>
+                    <td><strong>進場點改在 0.618 位置</strong>（更保守）。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="flow" data-section="flow">
+        <div class="section-header">
+          <span class="section-num">→</span>
+          <h2 class="section-title">流程總覽</h2>
+          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <div class="flow-section">
+              <div class="flow-title">點擊任一步驟可跳轉至該段落</div>
+              <div class="flow-steps">
+                <div class="flow-step" data-goto="section-1"><span class="flow-step-arrow">↓</span><span class="flow-step-text">找方向（1H 起，查 90m/2H/3H/4H/6H/8H/12H/1D）</span></div>
+                <div class="flow-step" data-goto="section-2"><span class="flow-step-arrow">↓</span><span class="flow-step-text">確認 1H 方向 = SDD，30 分弟弟 = SDD（同陣線）</span></div>
+                <div class="flow-step" data-goto="section-3"><span class="flow-step-arrow">↓</span><span class="flow-step-text">2H 哥哥 = SDD → 4H 哥哥的哥哥 = SDD</span></div>
+                <div class="flow-step" data-goto="section-3"><span class="flow-step-arrow">↓</span><span class="flow-step-text">4H OBV 多頭縮量 ↔ 1H 方向 OBV 同陣線</span></div>
+                <div class="flow-step" data-goto="section-4"><span class="flow-step-arrow">↓</span><span class="flow-step-text">8H 哥哥的哥哥 = OWU → 離場點 = 8H EMA52</span></div>
+                <div class="flow-step" data-goto="section-5"><span class="flow-step-arrow">↓</span><span class="flow-step-text">驗證離場點：EMA52 + 1H FIBO 重疊 + 8H POC 重疊</span></div>
+                <div class="flow-step" data-goto="section-6"><span class="flow-step-arrow">↓</span><span class="flow-step-text">1H 畫 FIBO 找進場點：0.618 / 1.382，兩 FIBO 重疊 + 4H 支撐阻力</span></div>
+                <div class="flow-step" data-goto="section-7"><span class="flow-step-arrow">↓</span><span class="flow-step-text">4H OBV：&gt;0 多頭縮量 → 維持進場點；&lt;0 → 進場點改 0.618</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="end-note">—— 完 ——</p>
+    </main>
+  </div>
+
+  <script>
+    (function() {
+      // Accordion: click header to toggle
+      document.querySelectorAll('.section-header').forEach(function(header) {
+        header.addEventListener('click', function() {
+          var section = this.closest('.section');
+          var wasOpen = section.classList.contains('open');
+          document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('open'); });
+          if (!wasOpen) section.classList.add('open');
+        });
+      });
+
+      // Sidebar: active state by scroll position
+      var sections = document.querySelectorAll('.section');
+      var navSteps = document.querySelectorAll('.nav-step[data-section]');
+
+      function updateActiveNav() {
+        var scrollY = window.scrollY;
+        var inner = document.querySelector('.main');
+        var top = inner ? inner.offsetTop : 0;
+
+        var current = null;
+        sections.forEach(function(section) {
+          var id = section.getAttribute('data-section');
+          var el = document.getElementById('section-' + id) || document.getElementById(id);
+          if (!el) return;
+          var rect = el.getBoundingClientRect();
+          if (rect.top <= 120 && rect.bottom > 150) current = id;
+        });
+        if (!current && document.getElementById('flow') && document.getElementById('flow').getBoundingClientRect().top <= 200) current = 'flow';
+
+        navSteps.forEach(function(step) {
+          var sid = step.getAttribute('data-section');
+          step.classList.toggle('active', sid === current);
+        });
+      }
+
+      window.addEventListener('scroll', function() { requestAnimationFrame(updateActiveNav); });
+      window.addEventListener('load', updateActiveNav);
+
+      // Flow steps: click to scroll and open section
+      document.querySelectorAll('.flow-step[data-goto]').forEach(function(step) {
+        step.addEventListener('click', function() {
+          var id = this.getAttribute('data-goto');
+          var target = document.getElementById(id);
+          if (!target) return;
+          document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('open'); });
+          target.closest('.section').classList.add('open');
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.querySelectorAll('.flow-step').forEach(function(s) { s.classList.remove('highlight'); });
+          var flowStep = document.querySelector('.flow-step[data-goto="' + id + '"]');
+          if (flowStep) flowStep.classList.add('highlight');
+          setTimeout(function() { if (flowStep) flowStep.classList.remove('highlight'); }, 2000);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
