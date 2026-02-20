@@ -130,6 +130,9 @@ body.unlocked #app-content { display: flex; }
 .section-inner p { margin: 0 0 0.75rem; }
 .section-inner strong { color: #fff; font-weight: 600; }
 
+.keyword { color: var(--accent); font-weight: 600; }
+.keyword-ema52 { color: #f87171; font-weight: 600; }
+
 .card {
   background: rgba(0,0,0,0.2);
   border: 1px solid var(--border);
