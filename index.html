@@ -44,7 +44,13 @@
       padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
     }
 
-    /* Layout: 螢幕置中，sidebar + main */
+    /* Layout: 螢幕置中，sidebar + main（密碼通過後才顯示） */
+    #app-content {
+      display: none;
+    }
+    body.unlocked #app-content {
+      display: flex;
+    }
     .app {
       display: flex;
       min-height: 100vh;
@@ -275,6 +281,30 @@
       color: var(--accent);
     }
 
+    /* SDD / SDU 分類標籤 */
+    .identity-block {
+      margin: 1rem 0;
+    }
+    .identity-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+    .identity-tag.sdd {
+      background: rgba(0, 212, 170, 0.2);
+      color: var(--accent);
+      border: 1px solid rgba(0, 212, 170, 0.4);
+    }
+    .identity-tag.sdu {
+      background: rgba(92, 124, 250, 0.2);
+      color: var(--blue);
+      border: 1px solid rgba(92, 124, 250, 0.4);
+    }
+    .identity-block .card { margin: 0.5rem 0 0; }
+
     .card ul { margin: 0; padding-left: 1.2rem; }
     .card li { margin-bottom: 0.25rem; }
 
@@ -389,6 +419,59 @@
       border-top: 1px solid var(--border);
     }
 
+    /* 首頁：選擇 SDD / SDU */
+    .home-page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      min-height: 60vh;
+    }
+    .home-page .hero {
+      margin-bottom: 2.5rem;
+    }
+    .choice-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      max-width: 560px;
+    }
+    .choice-card {
+      display: block;
+      width: 220px;
+      padding: 2rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      text-align: center;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .choice-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .choice-card.sdu:hover {
+      border-color: var(--blue);
+    }
+    .choice-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+    }
+    .choice-card.sdd .choice-card-title { color: var(--accent); }
+    .choice-card.sdu .choice-card-title { color: var(--blue); }
+    .choice-card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
     /* Responsive：平板 */
     @media (max-width: 900px) {
       .app {
@@ -416,6 +499,92 @@
       .hero h1 { font-size: 1.45rem; }
     }
 
+    /* 密碼進入畫面 */
+    .password-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    body.unlocked .password-gate {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .gate-box {
+      width: 100%;
+      max-width: 320px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .gate-box h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+    }
+    .gate-box p {
+      margin: 0 0 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .gate-box input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .gate-box input[type="password"]:focus {
+      border-color: var(--accent);
+    }
+    .gate-box input[type="password"]::placeholder {
+      color: var(--text-muted);
+    }
+    .gate-box button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition), opacity var(--transition);
+    }
+    .gate-box button:hover {
+      background: var(--accent-dim);
+    }
+    .gate-box button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .gate-error {
+      font-size: 0.85rem;
+      color: #f87171;
+      text-align: center;
+      margin-top: 0.75rem;
+      min-height: 1.25em;
+    }
+
     /* Responsive：手機 */
     @media (max-width: 480px) {
       .main {
@@ -438,236 +607,93 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="sidebar-title">步驟導覽</div>
-      <a class="nav-step" href="#section-1" data-section="1"><span class="nav-step-num">1</span>找方向</a>
-      <a class="nav-step" href="#section-2" data-section="2"><span class="nav-step-num">2</span>弟弟同陣線</a>
-      <a class="nav-step" href="#section-3" data-section="3"><span class="nav-step-num">3</span>哥哥與 OBV</a>
-      <a class="nav-step" href="#section-4" data-section="4"><span class="nav-step-num">4</span>離場點</a>
-      <a class="nav-step" href="#section-5" data-section="5"><span class="nav-step-num">5</span>驗證離場點</a>
-      <a class="nav-step" href="#section-6" data-section="6"><span class="nav-step-num">6</span>進場點</a>
-      <a class="nav-step" href="#section-7" data-section="7"><span class="nav-step-num">7</span>SDD 漲到進場點</a>
-      <a class="nav-step" href="#flow" data-section="flow"><span class="nav-step-num">→</span>流程總覽</a>
-    </aside>
+  <div class="password-gate" id="password-gate">
+    <div class="gate-box">
+      <h2>MMM 教學</h2>
+      <p>請輸入密碼以進入</p>
+      <form id="gate-form" autocomplete="off">
+        <input type="password" id="gate-input" placeholder="請輸入密碼" autocomplete="off" required>
+        <button type="submit" id="gate-btn">進入</button>
+      </form>
+      <div class="gate-error" id="gate-error" aria-live="polite"></div>
+    </div>
+  </div>
 
-    <main class="main">
+  <div class="app" id="app-content">
+    <div class="home-page">
       <header class="hero">
         <span class="hero-badge">MMM 教學</span>
-        <h1>找山數 → 方向 → 離場點 → 進場點</h1>
-        <p>從「找方向（最多山數）」到離場點與進場點的完整操作流程</p>
+        <h1>請選擇要查看的教學</h1>
+        <p>找山數 → 方向 → 離場點 → 進場點</p>
       </header>
-
-      <section class="section open" id="section-1" data-section="1">
-        <div class="section-header">
-          <span class="section-num">1</span>
-          <h2 class="section-title">找方向（最多山數）</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <ul>
-              <li><strong>起點</strong>：從距離 K 棒歷史<strong>最新的橙色破 0 軸</strong>開始。</li>
-              <li><strong>時間軸</strong>：以 <strong>1H</strong> 為起點，依序查找：1H → 90 分 → 2H → 3H → 4H → 6H → 8H → 12H → 1D，直到找到方向（最多山數）。</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="section-2" data-section="2">
-        <div class="section-header">
-          <span class="section-num">2</span>
-          <h2 class="section-title">確認方向與弟弟同陣線</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <ol>
-              <li>假設在 <strong>1H</strong> 找到方向，並確認身份為 <strong>SDD</strong>。</li>
-              <li>切換到<strong>弟弟時間軸：30 分鐘</strong>，確認 30 分鐘身份也是 <strong>SDD</strong>。</li>
-              <li>若方向（1H）與弟弟（30 分）皆為 SDD → <strong>方向與弟弟同陣線</strong>，可繼續下一步。</li>
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="section-3" data-section="3">
-        <div class="section-header">
-          <span class="section-num">3</span>
-          <h2 class="section-title">找哥哥身份並確認 OBV 同陣線</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <ol>
-              <li><strong>找哥哥</strong>：切到 <strong>2H</strong>，確認身份為 <strong>SDD</strong>。</li>
-              <li><strong>找哥哥的哥哥</strong>：切到 <strong>4H</strong>，確認身份為 <strong>SDD</strong>。</li>
-              <li><strong>OBV 同陣線</strong>：看 4H OBV 是否為<strong>多頭縮量</strong>；回到 1H 雙重確認身份與 OBV 皆同陣線（4H 身份 = SDD，4H OBV 與 1H 方向 OBV 同陣線）。</li>
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="section-4" data-section="4">
-        <div class="section-header">
-          <span class="section-num">4</span>
-          <h2 class="section-title">確定離場點位置（任務終點）</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <ol>
-              <li>切到 <strong>8H</strong>，確認身份為 <strong>OWU</strong>。</li>
-              <li><strong>離場點</strong> = <strong>哥哥的哥哥 8H 的 EMA52 位置</strong>。</li>
-            </ol>
-            <div class="highlight-box">
-              <p>至此，我們已確認：<strong>方向</strong> 與 <strong>離場點位置</strong>。</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="section-5" data-section="5">
-        <div class="section-header">
-          <span class="section-num">5</span>
-          <h2 class="section-title">驗證離場點位置是否準確</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <p>要驗證「離場點」是否可靠，需完成以下三步驟（共 3 個驗證）：</p>
-            <div class="card">
-              <h4>5.1 在 8H 畫離場水平線</h4>
-              <ul><li>在<strong>哥哥的哥哥 8H</strong> 圖上，於 <strong>EMA52</strong> 處畫出<strong>水平線</strong>，標記離場點。</li></ul>
-            </div>
-            <div class="card">
-              <h4>5.2 回 1H 畫 FIBO（SDD 方向）</h4>
-              <ul>
-                <li>回到 <strong>1H</strong>，取<strong>相對低點（A）</strong>與<strong>相對高點（B）</strong>畫 FIBO：A 左下→B 右上 ↗↓，或 A 右下→B 左上 ↑↖。</li>
-                <li>檢查 FIBO <strong>0.382</strong> 或 <strong>0.618</strong> 是否與 8H <strong>EMA52 水平線</strong>重疊。</li>
-              </ul>
-            </div>
-            <div class="card">
-              <h4>5.3 回 8H 畫成交量分佈圖</h4>
-              <ul><li>在 EMA52 附近畫<strong>波段成交量分佈圖</strong>，檢查 <strong>POC</strong> 是否與 EMA52 重疊 → 第三個驗證。</li></ul>
-            </div>
-            <h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">驗證小結（離場點）</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>驗證</th><th>內容</th></tr></thead>
-                <tbody>
-                  <tr><td>1</td><td>EMA52 水平線（離場點位置）</td></tr>
-                  <tr><td>2</td><td>1H FIBO 0.382 / 0.618 與 EMA52 重疊</td></tr>
-                  <tr><td>3</td><td>8H 波段成交量分佈圖 POC 與 EMA52 重疊</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p>三項皆符合 → <strong>離場點驗證完成</strong>。</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="section-6" data-section="6">
-        <div class="section-header">
-          <span class="section-num">6</span>
-          <h2 class="section-title">找進場點位置</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <p>以下在 <strong>1H 時間軸</strong>進行。</p>
-            <div class="card">
-              <h4>6.1 畫第一個 FIBO</h4>
-              <ul><li>相對高點與低點；A 左上→B 右下 ↘↑，或 A 右上→B 左下 ↑↙。</li></ul>
-            </div>
-            <div class="card">
-              <h4>6.2 標記 0.618、1.382</h4>
-              <ul><li><strong>0.618</strong> 畫水平線 → 可先進一半倉；<strong>1.382</strong> 畫水平線作進場目標。</li></ul>
-            </div>
-            <div class="card">
-              <h4>6.3 第二個 FIBO 找重疊</h4>
-              <ul><li>再畫第二個 FIBO，看是否與 0.618、1.382、1.618 重疊；目標至少兩條線重疊。</li></ul>
-            </div>
-            <div class="card">
-              <h4>6.4 4H 支撐與阻力確認</h4>
-              <ul><li>切到 <strong>4H</strong>，檢查進場重疊水平線是否落在<strong>支撐或阻力</strong>上；保留該區，其餘可清除。</li></ul>
-            </div>
-            <h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">進場點證據小結</h4>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>證據</th><th>內容</th></tr></thead>
-                <tbody>
-                  <tr><td>1</td><td>4H 支撐與阻力位置</td></tr>
-                  <tr><td>2</td><td>兩個 FIBO 重疊（0.618 / 1.382 / 1.618）</td></tr>
-                  <tr><td>3</td><td>進場水平線落在支撐或阻力上</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="section-7" data-section="7">
-        <div class="section-header">
-          <span class="section-num">7</span>
-          <h2 class="section-title">檢查 SDD 是否會漲到進場點位置</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <p>如何判斷 1H 方向 SDD <strong>會漲到進場點</strong>？看 <strong>4H OBV</strong>：</p>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>4H OBV 狀態</th><th>解讀</th><th>進場點建議</th></tr></thead>
-                <tbody>
-                  <tr>
-                    <td><strong>OBV &gt; 0，多頭縮量</strong></td>
-                    <td>仍有一口氣會漲上去，碰到進場區後再考慮離場。</td>
-                    <td>進場點維持在原本重疊區。</td>
-                  </tr>
-                  <tr>
-                    <td><strong>OBV &lt; 0</strong></td>
-                    <td>沒有氣了，上漲力道不足。</td>
-                    <td><strong>進場點改在 0.618 位置</strong>（更保守）。</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="flow" data-section="flow">
-        <div class="section-header">
-          <span class="section-num">→</span>
-          <h2 class="section-title">流程總覽</h2>
-          <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="section-body">
-          <div class="section-inner">
-            <div class="flow-section">
-              <div class="flow-title">點擊任一步驟可跳轉至該段落</div>
-              <div class="flow-steps">
-                <div class="flow-step" data-goto="section-1"><span class="flow-step-arrow">↓</span><span class="flow-step-text">找方向（1H 起，查 90m/2H/3H/4H/6H/8H/12H/1D）</span></div>
-                <div class="flow-step" data-goto="section-2"><span class="flow-step-arrow">↓</span><span class="flow-step-text">確認 1H 方向 = SDD，30 分弟弟 = SDD（同陣線）</span></div>
-                <div class="flow-step" data-goto="section-3"><span class="flow-step-arrow">↓</span><span class="flow-step-text">2H 哥哥 = SDD → 4H 哥哥的哥哥 = SDD</span></div>
-                <div class="flow-step" data-goto="section-3"><span class="flow-step-arrow">↓</span><span class="flow-step-text">4H OBV 多頭縮量 ↔ 1H 方向 OBV 同陣線</span></div>
-                <div class="flow-step" data-goto="section-4"><span class="flow-step-arrow">↓</span><span class="flow-step-text">8H 哥哥的哥哥 = OWU → 離場點 = 8H EMA52</span></div>
-                <div class="flow-step" data-goto="section-5"><span class="flow-step-arrow">↓</span><span class="flow-step-text">驗證離場點：EMA52 + 1H FIBO 重疊 + 8H POC 重疊</span></div>
-                <div class="flow-step" data-goto="section-6"><span class="flow-step-arrow">↓</span><span class="flow-step-text">1H 畫 FIBO 找進場點：0.618 / 1.382，兩 FIBO 重疊 + 4H 支撐阻力</span></div>
-                <div class="flow-step" data-goto="section-7"><span class="flow-step-arrow">↓</span><span class="flow-step-text">4H OBV：&gt;0 多頭縮量 → 維持進場點；&lt;0 → 進場點改 0.618</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <p class="end-note">—— 完 ——</p>
-    </main>
+      <div class="choice-cards">
+        <a href="sdd.html" class="choice-card sdd">
+          <div class="choice-card-title">SDD MMM</div>
+          <p class="choice-card-desc">方向 1H SDD · 弟弟 30 分 · 哥哥 2H/4H · 離場 8H OWU</p>
+        </a>
+        <a href="sdu.html" class="choice-card sdu">
+          <div class="choice-card-title">SDU MMM</div>
+          <p class="choice-card-desc">方向 2H SDU · 弟弟 1H · 哥哥 4H · 離場 8H OWD（鏡射）</p>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script>
     (function() {
+      var GATE_KEY = 'mmm_ok';
+      // 密碼經 SHA-256 雜湊，原始密碼不會出現在程式碼中
+      var HASH_HEX = '41fabdb1ccf1a6c4d170e3d6fdd89d21f7be4e1379d2ca0f215587d3ed9cc498';
+
+      function unlock() {
+        try { sessionStorage.setItem(GATE_KEY, '1'); } catch (e) {}
+        document.body.classList.add('unlocked');
+      }
+
+      function hashPassword(str) {
+        return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str))
+          .then(function(buf) {
+            return Array.from(new Uint8Array(buf))
+              .map(function(x) { return x.toString(16).padStart(2, '0'); })
+              .join('');
+          });
+      }
+
+      if (sessionStorage.getItem(GATE_KEY) === '1') {
+        unlock();
+      } else {
+        var form = document.getElementById('gate-form');
+        var input = document.getElementById('gate-input');
+        var err = document.getElementById('gate-error');
+        var btn = document.getElementById('gate-btn');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            err.textContent = '';
+            var val = (input.value || '').trim();
+            if (!val) { err.textContent = '請輸入密碼'; return; }
+            btn.disabled = true;
+            btn.textContent = '驗證中…';
+            hashPassword(val).then(function(hex) {
+              if (hex === HASH_HEX) {
+                btn.textContent = '進入中…';
+                unlock();
+              } else {
+                err.textContent = '密碼錯誤，請再試一次';
+                input.value = '';
+                input.focus();
+                btn.disabled = false;
+                btn.textContent = '進入';
+              }
+            }).catch(function() {
+              err.textContent = '驗證失敗，請再試一次';
+              btn.disabled = false;
+              btn.textContent = '進入';
+            });
+          });
+        }
+      }
+
       // Accordion: click header to toggle
       document.querySelectorAll('.section-header').forEach(function(header) {
         header.addEventListener('click', function() {

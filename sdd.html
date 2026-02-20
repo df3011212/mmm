@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDD MMM 教學｜找山數 → 方向 → 離場點 → 進場點</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css">
+</head>
+<body>
+  <div class="password-gate" id="password-gate"><div class="gate-box"><h2>MMM 教學</h2><p>請輸入密碼以進入</p><form id="gate-form" autocomplete="off"><input type="password" id="gate-input" placeholder="請輸入密碼" autocomplete="off" required><button type="submit" id="gate-btn">進入</button></form><div class="gate-error" id="gate-error" aria-live="polite"></div></div></div>
+  <div class="app" id="app-content">
+    <aside class="sidebar"><div class="sidebar-title">步驟導覽</div><a class="nav-step" href="#section-1" data-section="1"><span class="nav-step-num">1</span>找方向</a><a class="nav-step" href="#section-2" data-section="2"><span class="nav-step-num">2</span>弟弟同陣線</a><a class="nav-step" href="#section-3" data-section="3"><span class="nav-step-num">3</span>哥哥與 OBV</a><a class="nav-step" href="#section-4" data-section="4"><span class="nav-step-num">4</span>離場點</a><a class="nav-step" href="#section-5" data-section="5"><span class="nav-step-num">5</span>驗證離場點</a><a class="nav-step" href="#section-6" data-section="6"><span class="nav-step-num">6</span>進場點</a><a class="nav-step" href="#section-7" data-section="7"><span class="nav-step-num">7</span>SDD 漲到進場點</a><a class="nav-step" href="#flow" data-section="flow"><span class="nav-step-num">→</span>流程總覽</a></aside>
+    <main class="main">
+      <header class="hero"><span class="hero-badge">SDD 教學</span><h1>找山數 → 方向 → 離場點 → 進場點</h1><p>SDD 範例：方向 1H · 弟弟 30 分 · 哥哥 2H/4H · 離場 8H OWU</p><p style="margin-top:0.75rem;"><a href="index.html" style="color:var(--text-muted); font-size:0.9rem;">← 回首頁</a></p></header>
+      <section class="section open" id="section-1" data-section="1"><div class="section-header"><span class="section-num">1</span><h2 class="section-title">找方向（最多山數）</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><ul><li><strong>起點</strong>：從距離 K 棒歷史<strong>最新的橙色破 0 軸</strong>開始。</li><li><strong>時間軸</strong>：以 <strong>1H</strong> 為起點，依序查找：1H → 90 分 → 2H → 3H → 4H → 6H → 8H → 12H → 1D。</li></ul></div></div></section>
+      <section class="section" id="section-2" data-section="2"><div class="section-header"><span class="section-num">2</span><h2 class="section-title">確認方向與弟弟同陣線</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><ol><li>假設在 <strong>1H</strong> 找到方向，身份 <strong>SDD</strong>。</li><li>弟弟時間軸 <strong>30 分鐘</strong>，確認也是 <strong>SDD</strong>。</li><li>方向與弟弟同陣線 → 繼續。</li></ol></div></div></section>
+      <section class="section" id="section-3" data-section="3"><div class="section-header"><span class="section-num">3</span><h2 class="section-title">找哥哥身份並確認 OBV 同陣線</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><ol><li>哥哥 <strong>2H</strong> SDD；哥哥的哥哥 <strong>4H</strong> SDD。</li><li>4H OBV 多頭縮量，與 1H 方向 OBV 同陣線。</li></ol></div></div></section>
+      <section class="section" id="section-4" data-section="4"><div class="section-header"><span class="section-num">4</span><h2 class="section-title">確定離場點位置</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><ol><li>8H 身份 <strong>OWU</strong>。</li><li><strong>離場點</strong> = 哥哥的哥哥 8H 的 <strong>EMA52</strong>。</li></ol><div class="highlight-box"><p>至此已確認<strong>方向</strong>與<strong>離場點</strong>。</p></div></div></div></section>
+      <section class="section" id="section-5" data-section="5"><div class="section-header"><span class="section-num">5</span><h2 class="section-title">驗證離場點位置是否準確</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><p>要驗證「離場點」是否可靠，需完成以下三步驟（共 3 個驗證）：</p><div class="card"><h4>5.1 在 8H 畫離場水平線</h4><ul><li>在<strong>哥哥的哥哥 8H</strong> 圖上，於 <strong>EMA52</strong> 處畫出<strong>水平線</strong>，標記離場點。</li></ul></div><h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">5.2 回 1H 畫 FIBO（SDD 離場點）</h4><div class="card"><ul><li>取<strong>相對低點（A）</strong>與<strong>相對高點（B）</strong>：A 點左下→B 點右上 ↗↓，或 A 點右下→B 點左上 ↓↖。</li><li>檢查 FIBO <strong>0.382</strong> 或 <strong>0.618</strong> 是否與 8H <strong>EMA52 水平線</strong>重疊。</li></ul></div><div class="card"><h4>5.3 回 8H 畫成交量分佈圖</h4><ul><li>在 EMA52 附近畫<strong>波段成交量分佈圖</strong>，檢查 <strong>POC</strong> 是否與 EMA52 重疊 → 第三個驗證。</li></ul></div><h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">驗證小結（離場點）</h4><div class="table-wrap"><table><thead><tr><th>驗證</th><th>內容</th></tr></thead><tbody><tr><td>1</td><td>EMA52 水平線（離場點位置）</td></tr><tr><td>2</td><td>1H FIBO 0.382 / 0.618 與 EMA52 重疊</td></tr><tr><td>3</td><td>8H 波段成交量分佈圖 POC 與 EMA52 重疊</td></tr></tbody></table></div><p>三項皆符合 → <strong>離場點驗證完成</strong>。</p></div></div></section>
+      <section class="section" id="section-6" data-section="6"><div class="section-header"><span class="section-num">6</span><h2 class="section-title">找進場點位置</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><p>以下在 <strong>1H 時間軸</strong>進行。</p><h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">6.1 畫第一個 FIBO（SDD 進場點）</h4><div class="card"><ul><li>相對高點與低點：A 點左上→B 點右下 ↘↑，或 A 點右上→B 點左下 ↑↙。</li></ul></div><div class="card"><h4>6.2 標記 0.618、1.382</h4><ul><li><strong>0.618</strong> 畫水平線 → 可先進一半倉；<strong>1.382</strong> 畫水平線作進場目標。</li></ul></div><div class="card"><h4>6.3 第二個 FIBO 找重疊</h4><ul><li>再畫第二個 FIBO，看是否與 0.618、1.382、1.618 重疊；目標至少兩條線重疊。</li></ul></div><div class="card"><h4>6.4 4H 支撐與阻力確認</h4><ul><li>切到 <strong>4H</strong>，檢查進場重疊水平線是否落在<strong>支撐或阻力</strong>上；保留該區，其餘可清除。</li></ul></div><h4 style="margin:1rem 0 0.5rem; font-size:0.95rem;">進場點證據小結</h4><div class="table-wrap"><table><thead><tr><th>證據</th><th>內容</th></tr></thead><tbody><tr><td>1</td><td>4H 支撐與阻力位置</td></tr><tr><td>2</td><td>兩個 FIBO 重疊（0.618 / 1.382 / 1.618）</td></tr><tr><td>3</td><td>進場水平線落在支撐或阻力上</td></tr></tbody></table></div></div></div></section>
+      <section class="section" id="section-7" data-section="7"><div class="section-header"><span class="section-num">7</span><h2 class="section-title">檢查 SDD 是否會漲到進場點位置</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><p>如何判斷 1H 方向 SDD <strong>會漲到進場點</strong>？看 <strong>4H OBV</strong>：</p><div class="table-wrap"><table><thead><tr><th>4H OBV 狀態</th><th>解讀</th><th>進場點建議</th></tr></thead><tbody><tr><td><strong>OBV &gt; 0，多頭縮量</strong></td><td>仍有一口氣會漲上去，碰到進場區後再考慮離場。</td><td>進場點維持在原本重疊區。</td></tr><tr><td><strong>OBV &lt; 0</strong></td><td>沒有氣了，上漲力道不足。</td><td><strong>進場點改在 0.618 位置</strong>（更保守）。</td></tr></tbody></table></div></div></div></section>
+      <section class="section" id="flow" data-section="flow"><div class="section-header"><span class="section-num">→</span><h2 class="section-title">流程總覽</h2><svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div><div class="section-body"><div class="section-inner"><div class="flow-section"><div class="flow-steps"><div class="flow-step" data-goto="section-1"><span class="flow-step-arrow">↓</span><span class="flow-step-text">找方向 → 1H SDD、30分弟弟 → 2H/4H 哥哥 → 8H OWU 離場點 EMA52 → 驗證 → 1H 進場 FIBO → OBV</span></div></div></div></div></div></section>
+      <p class="end-note">—— 完 ——</p>
+    </main>
+  </div>
+  <script>
+    (function() {
+      var GATE_KEY = 'mmm_ok';
+      var HASH_HEX = '41fabdb1ccf1a6c4d170e3d6fdd89d21f7be4e1379d2ca0f215587d3ed9cc498';
+      function unlock() { try { sessionStorage.setItem(GATE_KEY, '1'); } catch (e) {} document.body.classList.add('unlocked'); }
+      function hashPassword(str) {
+        return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then(function(buf) {
+          return Array.from(new Uint8Array(buf)).map(function(x) { return x.toString(16).padStart(2, '0'); }).join('');
+        });
+      }
+      if (sessionStorage.getItem(GATE_KEY) === '1') { unlock(); } else {
+        var form = document.getElementById('gate-form'); var input = document.getElementById('gate-input'); var err = document.getElementById('gate-error'); var btn = document.getElementById('gate-btn');
+        if (form) form.addEventListener('submit', function(e) {
+          e.preventDefault(); err.textContent = '';
+          var val = (input.value || '').trim(); if (!val) { err.textContent = '請輸入密碼'; return; }
+          btn.disabled = true; btn.textContent = '驗證中…';
+          hashPassword(val).then(function(hex) {
+            if (hex === HASH_HEX) { btn.textContent = '進入中…'; unlock(); }
+            else { err.textContent = '密碼錯誤，請再試一次'; input.value = ''; input.focus(); btn.disabled = false; btn.textContent = '進入'; }
+          }).catch(function() { err.textContent = '驗證失敗，請再試一次'; btn.disabled = false; btn.textContent = '進入'; });
+        });
+      }
+      document.querySelectorAll('.section-header').forEach(function(header) {
+        header.addEventListener('click', function() {
+          var section = this.closest('.section'); var wasOpen = section.classList.contains('open');
+          document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('open'); });
+          if (!wasOpen) section.classList.add('open');
+        });
+      });
+      var sections = document.querySelectorAll('.section'); var navSteps = document.querySelectorAll('.nav-step[data-section]');
+      function updateActiveNav() {
+        var current = null;
+        sections.forEach(function(section) {
+          var id = section.getAttribute('data-section'); var el = document.getElementById('section-' + id) || document.getElementById(id);
+          if (!el) return; var rect = el.getBoundingClientRect();
+          if (rect.top <= 120 && rect.bottom > 150) current = id;
+        });
+        if (!current && document.getElementById('flow') && document.getElementById('flow').getBoundingClientRect().top <= 200) current = 'flow';
+        navSteps.forEach(function(step) { step.classList.toggle('active', step.getAttribute('data-section') === current); });
+      }
+      window.addEventListener('scroll', function() { requestAnimationFrame(updateActiveNav); }); window.addEventListener('load', updateActiveNav);
+      document.querySelectorAll('.flow-step[data-goto]').forEach(function(step) {
+        step.addEventListener('click', function() {
+          var id = this.getAttribute('data-goto'); var target = document.getElementById(id); if (!target) return;
+          document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('open'); }); target.closest('.section').classList.add('open');
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.querySelectorAll('.flow-step').forEach(function(s) { s.classList.remove('highlight'); });
+          var flowStep = document.querySelector('.flow-step[data-goto="' + id + '"]'); if (flowStep) { flowStep.classList.add('highlight'); setTimeout(function() { flowStep.classList.remove('highlight'); }, 2000); }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
