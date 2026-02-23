@@ -459,6 +459,10 @@
     .choice-card.sdu:hover {
       border-color: var(--blue);
     }
+    .choice-card.alerts:hover {
+      border-color: var(--orange);
+    }
+    .choice-card.alerts .choice-card-title { color: var(--orange); }
     .choice-card-title {
       font-size: 1.25rem;
       font-weight: 700;
@@ -626,6 +630,25 @@
         <h1>請選擇要查看的教學</h1>
         <p>找山數 → 方向 → 離場點 → 進場點</p>
       </header>
+      <div class="highlight-box" style="max-width: 560px; margin: 0 auto 1.5rem;">
+        <h4 style="margin: 0 0 0.75rem; font-size: 0.95rem; color: var(--accent);">離場點／進場點 對照（依方向）</h4>
+        <div class="table-wrap" style="margin: 0 0 0.75rem;">
+          <table>
+            <thead><tr><th>方向</th><th>離場點</th><th>進場點</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SDU</strong></td><td>找 <strong>4H 阻力</strong></td><td>找 <strong>支撐點</strong></td></tr>
+              <tr><td><strong>SDD</strong></td><td>找 <strong>4H 支撐</strong></td><td>找 <strong>阻力點</strong></td></tr>
+              <tr><td><strong>WDU</strong></td><td colspan="2">在自己的 <strong>EMA52 支撐點</strong></td></tr>
+              <tr><td><strong>WDD</strong></td><td colspan="2">在自己的 <strong>EMA52 阻力點</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin: 0 0 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+          <strong>左側</strong>：幫你找反彈上去的那個高點，再空他。<br>
+          <strong>右側（跌下來）</strong>：做多時用右側找進場點；左側是用來找反彈高點再空的。
+        </p>
+        <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted); opacity: 0.9;">「弟弟同陣線」須弟弟身份與方向一致，且<strong>弟弟粗 2 右側至少 1 條計山</strong>才成立。</p>
+      </div>
       <div class="choice-cards">
         <a href="sdd.html" class="choice-card sdd">
           <div class="choice-card-title">SDD MMM</div>
